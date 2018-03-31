@@ -11,14 +11,14 @@ import com.bitlinker.barometer.repo.BarometerRepo
 class BarometerPresenter(private var view: BarometerView?) {
     private val repo = BarometerApp.barometerComponent.barometerRepo
 
-    public fun resume() {
-        var started = repo.start(object : BarometerRepo.BarometerRepoListener {
-            override fun onPressureChanged(pressure: Float, isAnimated: Boolean) {
-                view?.setPressure(pressure, isAnimated)
+    fun resume() {
+        val started = repo.start(object : BarometerRepo.BarometerRepoListener {
+            override fun onPressureChanged(value: Float, isAnimated: Boolean) {
+                view?.setPressure(value, isAnimated)
             }
 
-            override fun onStoredPressureChanged(pressure: Float, isAnimated: Boolean) {
-                view?.setStoredPressure(pressure, isAnimated)
+            override fun onStoredPressureChanged(value: Float, isAnimated: Boolean) {
+                view?.setStoredPressure(value, isAnimated)
             }
         })
         if (!started) {
@@ -26,15 +26,15 @@ class BarometerPresenter(private var view: BarometerView?) {
         }
     }
 
-    public fun pause() {
+    fun pause() {
         repo.stop()
     }
 
-    public fun onManualArrowPress() {
+    fun onManualArrowPress() {
         repo.setManualPressure()
     }
 
-    public fun removeView() {
+    fun removeView() {
         view = null
     }
 }

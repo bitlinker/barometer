@@ -2,7 +2,7 @@ package com.bitlinker.barometer.di
 
 import android.content.Context
 import com.bitlinker.barometer.repo.BarometerRepo
-import com.bitlinker.barometer.repo.SensorRepo
+import com.bitlinker.barometer.repo.SensorWrapper
 import com.bitlinker.barometer.repo.Storage
 
 /**
@@ -10,13 +10,13 @@ import com.bitlinker.barometer.repo.Storage
  *
  * Created by bitlinker on 01.04.2018.
  */
-public class BarometerComponent(private val appContext: Context) {
+class BarometerComponent(private val appContext: Context) {
     private companion object {
         private val sync = Any()
     }
 
     private var _storage: Storage? = null
-    public val storage: Storage
+    private val storage: Storage
         get() {
             synchronized(sync) {
                 _storage = _storage ?: Storage(appContext)
@@ -24,20 +24,20 @@ public class BarometerComponent(private val appContext: Context) {
             }
         }
 
-    private var _sensorRepo: SensorRepo? = null
-    public val sensorRepo: SensorRepo
+    private var _sensorWrapper: SensorWrapper? = null
+    private val sensorWrapper: SensorWrapper
         get() {
             synchronized(sync) {
-                _sensorRepo = _sensorRepo ?: SensorRepo(appContext)
-                return _sensorRepo!!
+                _sensorWrapper = _sensorWrapper ?: SensorWrapper(appContext)
+                return _sensorWrapper!!
             }
         }
 
     private var _barometerRepo: BarometerRepo? = null
-    public val barometerRepo: BarometerRepo
+    val barometerRepo: BarometerRepo
         get() {
             synchronized(sync) {
-                _barometerRepo = _barometerRepo ?: BarometerRepo(sensorRepo, storage)
+                _barometerRepo = _barometerRepo ?: BarometerRepo(sensorWrapper, storage)
                 return _barometerRepo!!
             }
         }

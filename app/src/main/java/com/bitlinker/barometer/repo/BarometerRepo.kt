@@ -1,38 +1,40 @@
 package com.bitlinker.barometer.repo
 
 /**
+ * Barometer repository
+ *
  * Created by bitlinker on 01.04.2018.
  */
-public class BarometerRepo(
-        private val sensorRepo: SensorRepo,
+class BarometerRepo(
+        private val sensorWrapper: SensorWrapper,
         private val storage: Storage) {
 
-    public interface BarometerRepoListener {
+    interface BarometerRepoListener {
         fun onPressureChanged(value: Float, isAnimated: Boolean)
         fun onStoredPressureChanged(value: Float, isAnimated: Boolean)
     }
 
     private var listener: BarometerRepoListener? = null
 
-    public fun start(listener: BarometerRepoListener): Boolean {
+    fun start(listener: BarometerRepoListener): Boolean {
         this.listener = listener
         listener.onStoredPressureChanged(hpa2mmhg(storage.getStoredPressure()), false)
         listener.onPressureChanged(hpa2mmhg(storage.getLastPressure()), false)
-        return sensorRepo.start(object : SensorRepo.SensorRepoListener {
+        return sensorWrapper.start(object : SensorWrapper.SensorRepoListener {
             override fun onPressureChanged(value: Float) {
                 listener.onPressureChanged(hpa2mmhg(value), true)
             }
         })
     }
 
-    public fun stop() {
-        storage.setLastPressure(sensorRepo.pressure)
-        sensorRepo.stop()
+    fun stop() {
+        storage.setLastPressure(sensorWrapper.pressure)
+        sensorWrapper.stop()
         listener = null
     }
 
-    public fun setManualPressure() {
-        storage.setStoredPressure(sensorRepo.pressure)
+    fun setManualPressure() {
+        storage.setStoredPressure(sensorWrapper.pressure)
         listener?.onStoredPressureChanged(hpa2mmhg(storage.getStoredPressure()), true)
     }
 

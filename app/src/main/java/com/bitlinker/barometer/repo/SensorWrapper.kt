@@ -7,12 +7,12 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 
 /**
- * Barometric sensor repository
+ * Barometric sensor wrapper
  *
  * Created by bitlinker on 31.03.2018.
  */
-public class SensorRepo(appContext: Context) : SensorEventListener {
-    public interface SensorRepoListener {
+class SensorWrapper(appContext: Context) : SensorEventListener {
+    interface SensorRepoListener {
         fun onPressureChanged(value: Float)
     }
 
@@ -20,17 +20,17 @@ public class SensorRepo(appContext: Context) : SensorEventListener {
     private val sensor = sensorManager?.getDefaultSensor(Sensor.TYPE_PRESSURE)
     private var listener: SensorRepoListener? = null
 
-    public var pressure = SensorManager.PRESSURE_STANDARD_ATMOSPHERE
+    var pressure = SensorManager.PRESSURE_STANDARD_ATMOSPHERE
 
     private fun isAvailable(): Boolean {
         return sensorManager != null && sensor != null
     }
 
-    public fun start(listener: SensorRepoListener): Boolean {
+    fun start(listener: SensorRepoListener): Boolean {
         if (!isAvailable()) {
             return false
         }
-        this.listener = listener;
+        this.listener = listener
         sensorManager?.registerListener(
                 this,
                 sensor,
@@ -38,7 +38,7 @@ public class SensorRepo(appContext: Context) : SensorEventListener {
         return true
     }
 
-    public fun stop() {
+    fun stop() {
         if (isAvailable()) {
             return
         }
