@@ -16,5 +16,5 @@
 
 <resources>
     <string name="barometer_app_name">Барометр</string>
-    <string name="activity_barometer_error_not_supported">Извините, в устройстве нет поддерживаемого датчика давления.</string>
+    <string name="activity_barometer_error_not_supported">Извините, в устройстве нет поддержки датчика давления.</string>
 </resources>
