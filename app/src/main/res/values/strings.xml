@@ -16,5 +16,5 @@
 
 <resources>
     <string name="barometer_app_name">Barometer</string>
-    <string name="activity_barometer_error_not_supported">Sorry, your device have no supported barometer sensor.</string>
+    <string name="activity_barometer_error_not_supported">Sorry, your device have no barometer sensor support.</string>
 </resources>
